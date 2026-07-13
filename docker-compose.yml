@@ -1,0 +1,11 @@
+services:
+  catalog-service:
+    build: .
+    container_name: catalog-service-java
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-supabase}
+    restart: unless-stopped
