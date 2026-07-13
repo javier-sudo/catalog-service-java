@@ -7,7 +7,10 @@ Microservicio de catalogo de Flash Drop Delivery construido con Java 21 y Spring
 ```text
 GET  /health
 GET  /catalog/products
+POST /catalog/products
 POST /catalog/products/validate
+GET  /catalog/categories
+GET  /catalog/restaurants
 ```
 
 Ejemplo de validacion:
@@ -47,13 +50,27 @@ Este es el modo recomendado para probar desde el equipo local, porque usa `SUPAB
 docker compose up --build
 ```
 
-Para usar PostgreSQL directo en Docker:
+Por defecto Docker levanta el servicio con el perfil `postgres`, pensado para correr dentro
+del VPS/Docker de la empresa usando `POSTGRES_HOST=db`.
 
-```powershell
-$env:SPRING_PROFILES_ACTIVE="postgres"
-docker compose up --build
+El archivo `.env` real debe quedar en el servidor, no en GitHub:
+
+```text
+SPRING_PROFILES_ACTIVE=postgres
+POSTGRES_HOST=db
+POSTGRES_PORT=5432
+POSTGRES_DB=postgres
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=********
+POSTGRES_SSLMODE=disable
 ```
 
 Nota: `POSTGRES_HOST=db` funciona solo si este servicio corre dentro de la misma red Docker/VPS
 donde existe el contenedor `db`. Desde el equipo local normalmente no resuelve. Si se usa pooler,
 hay que confirmar que el usuario/tenant del pooler sea valido para ese Supabase.
+
+Para probar sin base real:
+
+```powershell
+.\gradlew.bat bootRun --args="--spring.profiles.active=local"
+```

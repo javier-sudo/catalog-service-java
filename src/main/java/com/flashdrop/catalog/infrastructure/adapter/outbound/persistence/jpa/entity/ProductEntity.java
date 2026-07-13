@@ -7,6 +7,8 @@ import com.flashdrop.catalog.domain.valueobjects.Money;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
@@ -15,6 +17,7 @@ import jakarta.persistence.Table;
 public class ProductEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "category_id", nullable = false)
@@ -37,6 +40,24 @@ public class ProductEntity {
     private boolean available;
 
     protected ProductEntity() {
+    }
+
+    public ProductEntity(
+            Long categoryId,
+            Long restaurantId,
+            String name,
+            String description,
+            BigDecimal price,
+            String image,
+            boolean available
+    ) {
+        this.categoryId = categoryId;
+        this.restaurantId = restaurantId;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.image = image;
+        this.available = available;
     }
 
     public Product toDomain() {

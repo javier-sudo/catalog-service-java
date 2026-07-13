@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Profile;
 
 import com.flashdrop.catalog.application.port.outbound.ProductRepositoryPort;
 import com.flashdrop.catalog.domain.model.Product;
+import com.flashdrop.catalog.infrastructure.adapter.outbound.persistence.jpa.entity.ProductEntity;
 import com.flashdrop.catalog.infrastructure.adapter.outbound.persistence.jpa.repository.SpringDataProductRepository;
 
 @Repository
@@ -37,6 +38,16 @@ public class JpaProductRepositoryAdapter implements ProductRepositoryPort {
 
     @Override
     public Product save(Product product) {
-        throw new UnsupportedOperationException("Crear producto por JPA aun no esta implementado");
+        ProductEntity entity = new ProductEntity(
+                product.getCategoryId(),
+                product.getRestaurantId(),
+                product.getName(),
+                product.getDescription(),
+                product.getPrice().amount(),
+                product.getImage(),
+                product.isAvailable()
+        );
+
+        return repository.save(entity).toDomain();
     }
 }
