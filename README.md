@@ -50,10 +50,36 @@ Este es el modo recomendado para probar desde el equipo local, porque usa `SUPAB
 docker compose up --build
 ```
 
-Por defecto Docker levanta el servicio con el perfil `postgres`, pensado para correr dentro
-del VPS/Docker de la empresa usando `POSTGRES_HOST=db`.
+Por defecto Docker levanta el servicio con el perfil `supabase`, usando la API REST del
+Kong/PostgREST de la empresa.
 
 El archivo `.env` real debe quedar en el servidor, no en GitHub:
+
+```text
+SPRING_PROFILES_ACTIVE=supabase
+SUPABASE_URL=http://supabasekong-wymwq8rktid7ov678oe4va90.76.13.169.150.sslip.io
+SUPABASE_SERVICE_ROLE_KEY=********
+```
+
+Luego se levanta con:
+
+```powershell
+docker compose up --build
+```
+
+Probar:
+
+```text
+http://localhost:8080/health
+http://localhost:8080/catalog/products
+http://localhost:8080/catalog/categories
+http://localhost:8080/catalog/restaurants
+```
+
+## Alternativa PostgreSQL dentro del VPS
+
+Si el microservicio corre dentro de la misma red Docker/VPS donde existe el contenedor
+`db`, se puede usar PostgreSQL directo:
 
 ```text
 SPRING_PROFILES_ACTIVE=postgres
@@ -66,8 +92,15 @@ POSTGRES_SSLMODE=disable
 ```
 
 Nota: `POSTGRES_HOST=db` funciona solo si este servicio corre dentro de la misma red Docker/VPS
-donde existe el contenedor `db`. Desde el equipo local normalmente no resuelve. Si se usa pooler,
-hay que confirmar que el usuario/tenant del pooler sea valido para ese Supabase.
+donde existe el contenedor `db`. Desde el equipo local normalmente no resuelve.
+
+## Seguridad de claves
+
+No subir nunca el archivo `.env` real a GitHub. En el repositorio solo debe existir
+`.env.example` con placeholders.
+
+La `SUPABASE_SERVICE_ROLE_KEY` es una clave de backend. No debe ir en Flutter, React,
+Next.js publico ni ningun frontend.
 
 Para probar sin base real:
 
