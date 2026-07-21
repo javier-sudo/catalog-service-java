@@ -2,6 +2,8 @@ package com.flashdrop.catalog.infrastructure.adapter.inbound.rest;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,6 +19,8 @@ import com.flashdrop.catalog.infrastructure.adapter.inbound.rest.dto.CreateProdu
 import com.flashdrop.catalog.infrastructure.adapter.inbound.rest.dto.ProductResponse;
 import com.flashdrop.catalog.infrastructure.adapter.inbound.rest.dto.ValidateProductsRequest;
 import com.flashdrop.catalog.infrastructure.adapter.inbound.rest.dto.ValidateProductsResponse;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/catalog/products")
@@ -39,7 +43,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public ProductResponse createProduct(@RequestBody CreateProductRequest request) {
+    public ResponseEntity<ProductResponse> createProduct(@Valid @RequestBody CreateProductRequest request) {
         // Convertimos el JSON que llega por HTTP a un Product del dominio.
         Product product = new Product(
                 null,
@@ -53,7 +57,8 @@ public class ProductController {
         );
 
         // El use case guarda el producto y el DTO deja lista la respuesta JSON.
-        return ProductResponse.fromDomain(createProductUseCase.execute(product));
+        ProductResponse response = ProductResponse.fromDomain(createProductUseCase.execute(product));
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping
@@ -66,7 +71,7 @@ public class ProductController {
     }
 
     @PostMapping("/validate")
-    public ValidateProductsResponse validateProducts(@RequestBody ValidateProductsRequest request) {
+    public ValidateProductsResponse validateProducts(@Valid @RequestBody ValidateProductsRequest request) {
         // POST /catalog/products/validate: confirma si una lista de ids existe.
         // Esto sirve para que otra logica, como pedidos, valide productos antes de comprar.
         List<Long> requestedIds = request.productIds() == null ? List.of() : request.productIds();

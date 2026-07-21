@@ -20,7 +20,7 @@ Flujo general
 -------------
 Cuando abres esta URL:
 
-  http://localhost:8080/catalog/products
+  http://localhost:8082/catalog/products
 
 el flujo interno es:
 
@@ -409,25 +409,25 @@ Importante:
 -------------------------
 Health:
 
-  GET http://localhost:8080/health
+  GET http://localhost:8082/health
 
 Productos:
 
-  GET  http://localhost:8080/catalog/products
-  POST http://localhost:8080/catalog/products
-  POST http://localhost:8080/catalog/products/validate
+  GET  http://localhost:8082/catalog/products
+  POST http://localhost:8082/catalog/products
+  POST http://localhost:8082/catalog/products/validate
 
 Categorias:
 
-  GET http://localhost:8080/catalog/categories
+  GET http://localhost:8082/catalog/categories
 
 Restaurantes:
 
-  GET http://localhost:8080/catalog/restaurants
+  GET http://localhost:8082/catalog/restaurants
 
 Nota:
 
-  http://localhost:8080/catalog
+  http://localhost:8082/catalog
 
 da error 404 porque esa ruta no existe.
 Las rutas reales son /catalog/products, /catalog/categories y /catalog/restaurants.
@@ -443,16 +443,16 @@ Correr conectado a Supabase:
 
   .\gradlew.bat bootRun --args="--spring.profiles.active=supabase"
 
-Si el puerto 8080 esta ocupado:
+Si el puerto 8082 esta ocupado:
 
   .\gradlew.bat bootRun --args="--spring.profiles.active=supabase --server.port=8081"
 
 Probar en navegador:
 
-  http://localhost:8080/health
-  http://localhost:8080/catalog/products
-  http://localhost:8080/catalog/categories
-  http://localhost:8080/catalog/restaurants
+  http://localhost:8082/health
+  http://localhost:8082/catalog/products
+  http://localhost:8082/catalog/categories
+  http://localhost:8082/catalog/restaurants
 
 
 12. Ejemplo de crear producto
@@ -470,7 +470,7 @@ Con PowerShell:
   } | ConvertTo-Json
 
   Invoke-RestMethod `
-    -Uri "http://localhost:8080/catalog/products" `
+    -Uri "http://localhost:8082/catalog/products" `
     -Method Post `
     -ContentType "application/json" `
     -Body $body

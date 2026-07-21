@@ -2,6 +2,8 @@
 
 Microservicio de catalogo de Flash Drop Delivery construido con Java 21 y Spring Boot 3.
 
+Puerto del servicio: `8082`.
+
 ## Endpoints
 
 ```text
@@ -70,10 +72,10 @@ docker compose up --build
 Probar:
 
 ```text
-http://localhost:8080/health
-http://localhost:8080/catalog/products
-http://localhost:8080/catalog/categories
-http://localhost:8080/catalog/restaurants
+http://localhost:8082/health
+http://localhost:8082/catalog/products
+http://localhost:8082/catalog/categories
+http://localhost:8082/catalog/restaurants
 ```
 
 ## Alternativa PostgreSQL dentro del VPS
